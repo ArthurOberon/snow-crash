@@ -8,8 +8,6 @@ total 12
 -rwsr-sr-x 1 flag03 level03 8627 Mar  5  2016 level03
 ```
 
-There is a executale with `flag03` wright.
-
 The binary `level03` is owned by `flag03`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag03`.
 
 ```bash
