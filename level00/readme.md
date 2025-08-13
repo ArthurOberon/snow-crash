@@ -9,10 +9,10 @@
 ```
 
 **Explanation:**
-- find				: command used to search for files.
-- /					: search starting point (root directory).
-- -user flag00		: filters results to only files owned by \`flag00\`.
-- 2>/dev/null		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+>- `find`				: command used to search for files.
+>- `/`					: search starting point (root directory).
+>- `-user flag00`		: filters results to only files owned by \`flag00\`.
+>- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 ## 2. Inspect the files
 
