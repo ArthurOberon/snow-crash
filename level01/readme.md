@@ -43,7 +43,7 @@ The potential token is embedded in the second field:
 > scp -P 4243 level01@127.0.0.1:/etc/passwd .
 ```
 
-Securely copies the /etc/passwd file from the VM to the host machine.
+Securely copies the `/etc/passwd` file from the VM to the host machine.
 
 **Explanation:**
 >- `scp` 								: secure copy command, used to transfer files between systems over SSH.
