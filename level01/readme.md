@@ -1,9 +1,9 @@
 # LEVEL01
 
-## 1. Find all the files that contains `flag01`
+## 1. Find All The Files That Contains `flag01`
 
 ```bash
-> find / -type f -exec grep -H "flag01" {} + 2>/dev/null
+level01@SnowCrash:~$ find / -type f -exec grep -H "flag01" {} + 2>/dev/null
 /etc/group:flag:x:1001:flag00,flag01,flag02,flag03,flag04,flag05,flag06,flag07,flag08,flag09,flag10,flag11,flag12,flag13,flag14
 /etc/group:flag01:x:3001:
 /etc/passwd:flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
@@ -22,7 +22,7 @@ Binary file /proc/3096/cmdline matches
 >- `\+` 								: terminates the exec command to run it efficiently on multiple files.
 >- `2>/dev/null`						: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
-## 2. Inspect output
+## 2. Inspect The Output
 
 two files contain potentials tokens : `/etc/passwd` and `/rofs/etc/passwd`.
 
@@ -37,10 +37,10 @@ The potential token is embedded in the second field:
 42hDRfypTqqnw
 ```
 
-## 3. Recover the token
+## 3. Recover The Token
 
 ```bash
-> scp -P 4243 level01@127.0.0.1:/etc/passwd .
+level01@SnowCrash:~$ scp -P 4243 level01@127.0.0.1:/etc/passwd .
 ```
 
 Securely copies the `/etc/passwd` file from the VM to the host machine.
@@ -52,10 +52,10 @@ Securely copies the `/etc/passwd` file from the VM to the host machine.
 >- `.`									: destination directory on the host.
 
 
-## 4. Crack the token
+## 4. Crack The Token
 
 ```bash
-> docker run --rm -it --name snow-crash-flag01 -v $(pwd):/snow-scrach debian bash
+level01@SnowCrash:~$ docker run --rm -it --name snow-crash-flag01 -v $(pwd):/snow-scrach debian bash
 root@d89462df5ce6:/# apt update; apt install -y john
 [...]
 root@d89462df5ce6:/# john --show snow-scrach/passwd
@@ -88,13 +88,13 @@ From this output we can extract the token:
 abcdefg
 ```
 
-## 5. Get the flag
+## 5. Get The Flag
 
 ```bash
-> su flag01
+level01@SnowCrash:~$ su flag01
 Password: 
 Don't forget to launch getflag !
 
-> getflag
+flag01@SnowCrash:~$ getflag
 Check flag.Here is your token : XXX
 ```

@@ -1,9 +1,9 @@
 # LEVEL02
 
-## 1. Inspect the file
+## 1. Inspect The Directory
 
 ```bash
-> ls -l
+level02@SnowCrash:~$ ls -l
 total 12
 ----r--r-- 1 flag02 level02 8302 Aug 30  2015 level02.pcap
 ```
@@ -13,7 +13,7 @@ There is a `.pcap` file, which contains a capture of network traffic.
 ## 2. Copy the file to the host
 
 ```bash
-> scp -P 4243 level02@127.0.0.1:~/level02.pcap .
+level02@SnowCrash:~$ scp -P 4243 level02@127.0.0.1:~/level02.pcap .
 ```
 
 Securely copies the `level02.pcap` file from the VM to the host machine.
@@ -24,10 +24,10 @@ Securely copies the `level02.pcap` file from the VM to the host machine.
 >- `level02@127.0.0.1:~/level02.pcap`	 	: path to the source file on the VM.
 >- `.`									: destination directory on the host.
 
-## 3. Create a Docker analysis environment
+## 3. Create A Docker Analysis Environment
 
 ```bash
-> docker run --rm -it --name snow-crash-flag02 -v $(pwd):/snow-scrach debian bash
+level02@SnowCrash:~$ docker run --rm -it --name snow-crash-flag02 -v $(pwd):/snow-scrach debian bash
 root@40d275155c42:/# apt update; apt install -y tshark xxd
 [...]
 ```
@@ -42,7 +42,7 @@ root@40d275155c42:/# apt update; apt install -y tshark xxd
 
 >- `apt update; apt install -y tshark xxd`	: install `tshark` for packet analysis and `xxd` for hex-to-binary conversion.
 
-## 4. Extract raw TCP payload
+## 4. Extract Raw TCP Payload
 
 ```bash
 root@9ca1591ece3e:/# tshark -r /snow-scrach/level02.pcap -T fields -e tcp.payload | xxd -r -p
@@ -67,7 +67,7 @@ The output reveals an interactive login attempt.
 >- `-r`								: reverse operation - convert hex back to binary/ASCII
 >- `-p`								: interprets the input as a continuous hex stream without formatting.
 
-## 5. Step-by-step payload reconstruction
+## 5. Step-By-Step Payload Reconstruction
 
 ```bash
 root@9ca1591ece3e:/# tshark -r /snow-scrach/level02.pcap -T fields -e ip.src -e ip.dst -e tcp.payload
@@ -166,13 +166,13 @@ The reconstruction reveals:
 ft_waNDReL0L
 ```
 
-## 6. Get the flag
+## 6. Get The Flag
 
 ```bash
-> su flag02
+level02@SnowCrash:~$ su flag02
 Password: 
 Don't forget to launch getflag !
 
-> getflag
+flag02@SnowCrash:~$ getflag
 Check flag.Here is your token : XXX
 ```
