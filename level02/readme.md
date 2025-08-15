@@ -1,6 +1,6 @@
 # LEVEL02
 
-## 1. Inspect The Directory
+## 1. Inspect The Home Directory
 
 ```bash
 level02@SnowCrash:~$ ls -l

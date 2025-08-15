@@ -1,6 +1,6 @@
 # LEVEL03
 
-## 1. Inspect The Directory
+## 1. Inspect The Home Directory
 
 ```bash
 level03@SnowCrash:~$ ls -l
@@ -100,6 +100,6 @@ Run the binary — it executes the fake `echo` instead of the real one.
 **Explanation:**
 >- `export` 			: modifies a environment variable.
 
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it
+>- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 
 >- `chmod +x file`		: makes the file executable.

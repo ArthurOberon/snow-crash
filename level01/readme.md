@@ -17,7 +17,7 @@ Binary file /proc/3096/cmdline matches
 **Explanation:**
 >- `find`								: command used to search for files.
 >- `/`									: search starting point (root directory).
->- `-type f`							: search onlyfor files.
+>- `-type f`							: search for files only.
 >- `-exec grep -H "flag01" {}`			: exec \`grep -H "flag01"\` on each file found.
 >- `\+` 								: terminates the exec command to run it efficiently on multiple files.
 >- `2>/dev/null`						: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.

@@ -18,7 +18,12 @@ level05@127.0.0.1's password:
 You have new mail.
 ```
 
-## 1. Inspect The Directory
+When connect via ssh to the VM, a hint in echo is printed:
+```
+You have new mail.
+```
+
+## 1. Inspect The Home Directory
 
 ```bash
 level05@SnowCrash:~$ ls -la
@@ -29,8 +34,8 @@ d--x--x--x  1 root    users    340 Aug 30  2015 ..
 -r-x------  1 level05 level05 3518 Aug 30  2015 .bashrc
 -r-x------  1 level05 level05  675 Apr  3  2012 .profile
 ```
-
-The directory is empty, so it will need another command to find interresting files.
+The home directory contains no directly exploitable files.
+A broader search is required to locate potentially useful files.
 
 ## 2.a Find All The Files That Owned by `flag05`
 
@@ -41,10 +46,10 @@ level05@SnowCrash:~$ find / -user "flag05" 2>/dev/null
 ```
 
 **Explanation:**
->- 				: 
->- 				: 
->- 		: 
->- 		:
+>- `find`				: command used to search for files.
+>- `/`					: search starting point (root directory).
+>- `-user flag05`		: filters results to only files owned by \`flag05\`.
+>- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 ## 2.b Inspect The Files
 
@@ -62,7 +67,8 @@ done
 cat: /rofs/usr/sbin/openarenaserver: Permission denied
 ```
 
-Execute code but cannot by security flaws because even if it's owned by `flag05` it's not run with thoses privileges (absence of SUID). So it's run with the privileges of the user that runs the code.
+The script iterates through `/opt/openarenaserver/` and executes each file found there.
+However, it does not have the SUID bit set, meaning it will run with the privileges of the executing user rather than `flag05`.
 
 ## 2.c Try To Exploit
 
@@ -76,7 +82,13 @@ level05@SnowCrash:~$ sh /usr/sbin/openarenaserver
 uid=2005(level05) gid=2005(level05) groups=2005(level05),100(users)
 ```
 
-As said, the privileges stays the runner privileges.
+**Explanation:**
+>- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
+>- `sh`					: execute a script.
+>- `id`					: gives id of the current user.
+
+
+The `id` output confirms the privileges used at execution.
 
 ## 3.a Find All The Directory Name `mail`
 
@@ -87,12 +99,15 @@ level05@SnowCrash:~$ find / -type d -name mail 2>/dev/null
 ```
 
 **Explanation:**
->- 				: 
->- 				: 
->- 		: 
->- 		:
+>- `find`				: command used to search for files.
+>- `/`					: search starting point (root directory).
+>- `-type d`			: search for directories only.
+>- `-name mail`			: filters results to only files named \`mail\`.
+>- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
-## 3.b Inspect The Directory
+With the help of the hint found before, 2 directories can be found.
+
+## 3.b Inspect The Mail Directory
 
 ```bash
 level05@SnowCrash:~$ ls -l /var/mail/ /rofs/var/mail
@@ -108,17 +123,15 @@ level05@SnowCrash:~$ cat /var/mail/level05 /rofs/var/mail/level05
 */2 * * * * su -c "sh /usr/sbin/openarenaserver" - flag05
 ```
 
-Unlike `/usr/sbin/openarenaserver`, `level05` has `root` privileges.
-It a crontab file, that setup every 2 minutes the run of the command `su -c "sh /usr/sbin/openarenaserver"` with the privileges of `flag05`.
+A crontab file is found, owned by `root`. It runs `/usr/sbin/openarenaserver` every two minutes as `flag05` (unlike ``/usr/sbin/openarenaserver` alone).
+This crontab file run the `su -c "sh /usr/sbin/openarenaserver` every two minutes.
 
 **Explanation:**
->- `*/2 * * * *`						: 
->- `su`								: 
->- `-c`								: 
->- `"sh /usr/sbin/openarenaserver"`	:
->- `- flag05`						: 
-
-So `/usr/sbin/openarenaserver` will run the command that it found, with the right privilege.
+>- `*/2 * * * *`					: each * stand for un time `minute hour day month year`. 
+>- `su`								: switches to another user. 
+>- `-c`								: executes the following command.
+>- `"sh /usr/sbin/openarenaserver"`	: executes the `/usr/sbin/openarenaserver` script.
+>- `- flag05`						: runs this rule as `flag05`.
 
 ## 3.c Try To Exploit
 
@@ -135,11 +148,13 @@ level05@SnowCrash:~$ cat /tmp/id
 uid=3005(flag05) gid=3005(flag05) groups=3005(flag05),1001(flag)
 ```
 
+This try of exploit confirms executions with `flag05` privileges.
+
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it 
->- `crontab file`		: 
->- `crontab -l`			: 
->- `id`					:
+>- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it .
+>- `crontab file`		: setup a new rules.
+>- `crontab -l`			: list all the rules.
+>- `id`					: print the uid and uig of the executing user.
 
 ## 4. Exploit Using `crontab`
 
@@ -166,7 +181,7 @@ Wait 2 minutes that the crontab take effect.
 Then `cat` the content of `/tmp/getflag`.
 
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it 
+>- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 >- `crontab file`		: 
 >- `crontab -l`			: 
 
