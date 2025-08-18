@@ -167,7 +167,7 @@ level05@SnowCrash:~$ cat << EOF > /opt/openarenaserver/getflag
 [wait 2 minutes...]
 level05@SnowCrash:~$ cat /tmp/
 level05@SnowCrash:~$ cat /tmp/getflag
-Check flag.Here is your token : viuaaale9huek52boumoomioc
+Check flag.Here is your token : XXX
 ```
 
 Create a script in `/opt/openarenaserver/` that executes `getflag` and redirect the output in `/tmp/getflag`.
