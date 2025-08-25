@@ -45,6 +45,7 @@ GCC: (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
 level03.c
 [...]
 ```
+
 The important part is the line :
 ```
 /usr/bin/env echo Exploit me
@@ -54,7 +55,7 @@ This means the binary uses `system("/usr/bin/env echo Exploit me")` internally.
 `/usr/bin/env` will look for echo in the directories defined by the `PATH` environment variable — which we can manipulate.
 
 **Explanation:**
->- strings			: displays printable strings from a binary file.
+>- `strings`			: displays printable strings from a binary file.
 
 ## 3.a Exploit The Binary With Link
 

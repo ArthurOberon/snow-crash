@@ -13,7 +13,7 @@ There is a `.pcap` file, which contains a capture of network traffic.
 ## 2. Copy the file to the host
 
 ```bash
-level02@SnowCrash:~$ scp -P 4243 level02@127.0.0.1:~/level02.pcap .
+host@pc:> scp -P 4243 level02@127.0.0.1:~/level02.pcap .
 ```
 
 Securely copies the `level02.pcap` file from the VM to the host machine.

@@ -85,13 +85,12 @@ level05@SnowCrash:~$ sh /usr/sbin/openarenaserver
 uid=2005(level05) gid=2005(level05) groups=2005(level05),100(users)
 ```
 
+The `id` output confirms that the script runs with the current user’s privileges.
+
 **Explanation:**
 >- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 >- `sh`					: execute a script.
 >- `id`					: gives id of the current user.
-
-
-The `id` output confirms that the script runs with the current user’s privileges.
 
 ## 3.a Find All `mail` Directories
 
@@ -101,14 +100,14 @@ level05@SnowCrash:~$ find / -type d -name mail 2>/dev/null
 /rofs/var/mail
 ```
 
+With the help of the hint found before, 2 directories can be found.
+
 **Explanation:**
 >- `find`				: command used to search for files.
 >- `/`					: search starting point (root directory).
 >- `-type d`			: search for directories only.
 >- `-name mail`			: filters results to only files named \`mail\`.
 >- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
-
-With the help of the hint found before, 2 directories can be found.
 
 ## 3.b Inspect Mail Directories
 

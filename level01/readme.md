@@ -40,7 +40,7 @@ The potential token is embedded in the second field:
 ## 3. Recover The Token
 
 ```bash
-level01@SnowCrash:~$ scp -P 4243 level01@127.0.0.1:/etc/passwd .
+host@pc:> scp -P 4243 level01@127.0.0.1:/etc/passwd .
 ```
 
 Securely copies the `/etc/passwd` file from the VM to the host machine.
