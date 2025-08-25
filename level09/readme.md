@@ -15,8 +15,35 @@ level09@SnowCrash:~$ ./level09 token
 tpmhr
 ```
 
+The binary requires one argument, but when we give it the `token` file, the output is garbled and not the real password. The file `token` is owned by `flag09` and only readable by `level09` (and `flag09`).
+
+```bash
+level09@SnowCrash:~$ ./level09 test
+tfuw
+level09@SnowCrash:~$ ./level09 aaaa
+abcd
+level09@SnowCrash:~$ ./level09 1111
+1234
+```
+
+From these tests, it can be deduced that the program adds the position index of each character to its ASCII code.
+The encoding logic is a Caesar-like cipher, likely implemented as:
+```c
+i = 0;
+while (str[i])
+{
+	printf("%c", str[i] + i);
+	++i;
+}
+```
+
+**Explanation of logic (encoding):**
+>- Each character of the input string is incremented by its position index (0-based).
+>- Loop through the input string until the null terminator.
+
 ## 2. Create Reverse Program
 
+Since the binary applies an encoding (each character shifted by its index), a small C program can reverse the operation:
 
 ```c
 #include "stdio.h"
@@ -36,6 +63,9 @@ int main(int argc, char **argv)
 }
 ```
 
+**Explanation of logic (decoding):**
+>- Each character of the input string is decremented by its position index (0-based).
+>- Loop through the input string until the null terminator.
 
 ## 3.a Reverse The Token from the VM
 
@@ -48,13 +78,14 @@ f3iji1ju5yuevaus41q1afiuq
 ```
 
 **Explanation:**
->- `vim`				: 
->- `gcc` 				: 
->- `$(cat token)` 		: 
-
+>- `vim`				: create/edit the source code.
+>- `gcc` 				: compile the C file into a binary.
+>- `$(cat token)` 		: command substitution, replaces the expression with the contents of `token`.
 
 
 ## 3.b Reverse The Token from the host
+
+Alternatively, the `token` file can also be transferred to the host and decoded locally.
 
 ```bash
 host@pc:> scp -P 4243 level09@127.0.0.1:~/token .
@@ -68,13 +99,16 @@ f3iji1ju5yuevaus41q1afiuq
 **Explanation:**
 >- `scp` 								: secure copy command, used to transfer files between systems over SSH.
 >- `-P 4243`							: specify the custom SSH port (4243).
->- `level01@127.0.0.1:/etc/passwd`	 	: path to the source file on the VM.
+>- `level09@127.0.0.1:~/token`	 		: path to the source file on the VM.
 >- `.`									: destination directory on the host.
 
+>- `code`								: open the file with VS Code.
 >- `chmod +x file`						: makes the file executable.
 
->- `gcc` 								: 
->- `$(cat token)` 						: 
+>- `gcc` 								: compile the program.
+>- `gcc FILE -o EXECUTABLE` 			: compile the source file `FILE` into an executable named `EXECUTABLE`.
+
+>- `$(cat token)` 						: command substitution, replaces the expression with the contents of `token`.
 
 ## 4. Get the flag
 
