@@ -1,5 +1,7 @@
 # LEVEL11
+# LEVEL11
 
+## 1. Inspect The Home Directory
 ## 1. Inspect The Home Directory
 
 ```bash
