@@ -3,7 +3,7 @@
 ## 0. Connection Hint
 
 ```bash
-> ssh -p 4243 level05@127.0.0.1
+host@pc:> ssh -p 4243 level05@127.0.0.1
 	   _____                      _____               _     
 	  / ____|                    / ____|             | |    
 	 | (___  _ __   _____      _| |     _ __ __ _ ___| |__  
@@ -25,6 +25,10 @@ You have new mail.
 ```
 
 This will be useful later.
+
+**Explanation:**
+>- `ssh HOST`			:
+>- `-p 4243`			:
 
 ## 1. Inspect The Home Directory
 

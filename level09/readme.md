@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 >- Each character of the input string is decremented by its position index (0-based).
 >- Loop through the input string until the null terminator.
 
-## 3.a Reverse The Token from the VM
+## 3.a Reverse The Token From The VM
 
 ```bash
 level09@SnowCrash:~$ cd /tmp/
@@ -83,7 +83,7 @@ f3iji1ju5yuevaus41q1afiuq
 >- `$(cat token)` 		: command substitution, replaces the expression with the contents of `token`.
 
 
-## 3.b Reverse The Token from the host
+## 3.b Reverse The Token From The Host
 
 Alternatively, the `token` file can also be transferred to the host and decoded locally.
 
@@ -110,7 +110,7 @@ f3iji1ju5yuevaus41q1afiuq
 
 >- `$(cat token)` 						: command substitution, replaces the expression with the contents of `token`.
 
-## 4. Get the flag
+## 4. Get The Flag
 
 ```bash
 > su flag09

@@ -89,7 +89,7 @@ Because the program runs `system("/bin/echo $LOGNAME")` with `flag07`’s privil
 >- `export` 			: modifies a environment variable.
 
 **Breakdown of the payload:**
->- `$(...)`		: command substitution syntax in shell. It executes the command inside the parentheses and replaces it with the output.
+- `$(...)`		: command substitution syntax in shell. It executes the command inside the parentheses and replaces it with the output.
 
 **In the order:**
 >- Binary calls `system("/bin/echo $LOGNAME")`.
