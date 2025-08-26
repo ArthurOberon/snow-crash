@@ -31,7 +31,7 @@
 ```
 ```
 
-## 6. Get the flag
+## 6. Get The Flag
 
 ```bash
 > su flagXX

@@ -48,7 +48,7 @@ The program runs with `flag08`’s privileges, so it is able to follow the link 
 >- `ln TARGET LINK`	: create link from `LINK` to `TARGET`.
 >- `-s`				: create a symbolic link from `LINK` to `TARGET`.
 
-## 3. Get the flag
+## 3. Get The Flag
 
 ```bash
 > su flag08

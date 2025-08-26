@@ -73,8 +73,8 @@ When the binary executes `echo`, it actually runs `getflag` with `flag03`'s priv
 **Explanation:**
 >- `export`			: modifies a environment variable.
 
->- `ln TARGET LINK`	: create link from `LINK` to `TARGET`.
->- `-s`				: create a symbolic link from `LINK` to `TARGET`.
+>- `ln TARGET LINK`	: creates link from `LINK` to `TARGET`.
+>- `-s`				: creates a symbolic link from `LINK` to `TARGET`.
 
 ## 3.b Exploit The Binary With Script
 
