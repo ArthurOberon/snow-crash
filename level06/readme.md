@@ -9,7 +9,7 @@ total 12
 -rwxr-x---  1 flag06 level06  356 Mar  5  2016 level06.php
 ```
 
-The executable `level06` is owned by `flag06`, and has the SUID bit set `-rwsr-x---+`. This means it will run with the privileges of `flag06`.
+The executable `level06` is owned by `flag06`, and has the SUID bit set (`-rwsr-x---+`). This means it will run with the privileges of `flag06`.
 
 ## 2. Inspect The `level06.php` Program 
 

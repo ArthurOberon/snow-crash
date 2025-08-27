@@ -8,7 +8,7 @@ total 4
 -rwsr-sr-x 1 flag04 level04 152 Mar  5  2016 level04.pl
 ```
 
-The script `level04.pl` is owned by `flag04`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag04`.
+The script `level04.pl` is owned by `flag04`, with the SUID bit set (`-rwsr-sr-x`), meaning it will run with the privileges of `flag04`.
 `perl` is a scripting language, often used for automation and for generating dynamic web content (for example, via CGI).
 Interact with it by sending an HTTP request.
 

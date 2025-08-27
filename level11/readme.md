@@ -1,7 +1,5 @@
 # LEVEL11
-# LEVEL11
 
-## 1. Inspect The Home Directory
 ## 1. Inspect The Home Directory
 
 ```bash
@@ -45,9 +43,9 @@ while 1 do
 end
 ```
 
-The Lua script `level11.pl` is owned by `flag11`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag11`.
+The Lua script `level11.pl` is owned by `flag11`, with the SUID bit set (`-rwsr-sr-x`), meaning it will run with the privileges of `flag11`.
 
-Program breakdown:
+**Program breakdown:**
 -A socket server binds to `127.0.0.1` on port `5151`.
 -When a client connects, it prompts for a password.
 -The password is passed to the `hash()` function, which executes `sha1sum` through `io.popen()` via the command `echo "..pass.." | sha1sum`.

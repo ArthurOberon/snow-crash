@@ -9,7 +9,7 @@ total 16
 -rw-------  1 flag08 flag08    26 Mar  5  2016 token
 ```
 
-The binary `level08` is owned by `flag08`, with the SUID bit set `-rwsr-s---+`, meaning it will run with the privileges of `flag08`.
+The binary `level08` is owned by `flag08`, with the SUID bit set (`-rwsr-s---+`), meaning it will run with the privileges of `flag08`.
 The file `token` is owned by `flag08`, with permissions `-rw-------`, so only `flag08` can read it directly.
 
 

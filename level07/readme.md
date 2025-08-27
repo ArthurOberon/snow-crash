@@ -8,7 +8,7 @@ total 12
 -rwsr-sr-x 1 flag07 level07 8805 Mar  5  2016 level07
 ```
 
-The binary `level07` is owned by `flag07`, with the SUID bit set `-rwsr-sr-x`, meaning it will run with the privileges of `flag07`.
+The binary `level07` is owned by `flag07`, with the SUID bit set (`-rwsr-sr-x`), meaning it will run with the privileges of `flag07`.
 
 ```bash
 level07@SnowCrash:~$ ./level07 
