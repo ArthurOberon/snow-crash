@@ -1,15 +1,56 @@
 # LEVEL14
 
-## 1. 
+## 1. Inspect The Home Directory
 
 ```bash
 level14@SnowCrash:~$ ls -l
 total 0
 ```
 
-TEXT
+The home directory is empty.
 
-## 2.a Bypass With `gdb` - Avoid Checks
+```bash
+command check find for user flag14, etc.
+```
+
+No files are accessible with flag14 rights.
+The solution lies directly inside the `/bin/getflag` binary
+
+## 2 Analyse The Binary
+
+```bash
+objdump /bin/getflag
+```
+
+The binary check the UID and return the token (or error msg) depending on the result of `getuid()`. Just like `level13` binary.
+So it can aslo be bypass with a debugger (`gdb`) by override the return value of `getuid`.
+
+## 3.a Bypass `getuid()` With `gdb`
+
+```bash
+test avoid only getuid() check with gdb (like level13)
+```
+
+But it the pogram check bypass method and block it. Using `strace` we can see which function it's used.
+
+However, this time the program also detects debuggers by using ptrace().
+
+
+However, it's doesn't work. `getflag` may also detects debuggers. Using `strace`, we can learn some more.
+
+```bash
+strace result
+```
+
+Indeed, there a `ptrace()` call that see the debugger:
+```
+~ptrace(PTRACE_TRACEME, 0, 0, 0) = -1 EPERM~
+```
+
+This indicates clearly the binary is protecting itself against debugging.
+To bypass it, both `ptrace()` and `getuid()` need to be intercepted inside gdb.
+
+## 4 Bypass Protection With `gdb`
 
 ```bash
 flag14:x:3014:3014::/home/flag/flag14:/bin/bash
@@ -39,36 +80,42 @@ which has no line number information.
 (gdb) set $eax=3014
 (gdb) c
 Continuing.
-Check flag.Here is your token : 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+Check flag.Here is your token : 
 [Inferior 1 (process 2294) exited normally]
 ```
 
 TEXT
 
 **Bypass explanation:**
->- `gdb ./level13`											: launch `gdb` on the binary `level13`.
+>- `gdb ./level14`											: launch `gdb` on the binary `level14`.
+>- `b ptrace`												: set a breakpoint on the `ptrace` function.
 >- `b getuid`												: set a breakpoint on the `getuid` function.
 >- `r`														: run the program and stop at the `getuid` breakpoint.
->- `Breakpoint 1, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
+>- `Breakpoint 1, 0xb7f146d0 in ptrace ()`					: indicates the program has paused at `ptrace()`.
+>- `n`														: step to the next instruction after `ptrace`.
+>- `set $eax=0`												: override the return value of `ptrace()` to `0` (instead of `-1`).
+>- `c`														: resume execution to reach the next breakpoint on `getuid`.
+>- `Breakpoint 2, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
 >- `n`														: step to the next instruction after `getuid`.
 >- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
->- `set $eax=4242`											: override the return value of `getuid()` to `4242` (instead of `2013`).
->- `continue`												: resume execution to reach the token output.
+>- `set $eax=3014`											: override the return value of `getuid()` to `3014` (instead of `2014`).
+>- `c`														: resume execution to reach the token output.
 
 **Explanation:**
 >- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
+>- `-q` 				: 
 
 >- `b FUNCTION` 		: set a breakpoint at `FUNCTION`.
 >- `r` 					: run the program in the debugger.
 >- `n` 					: execute the next instruction (step over).
 >- `set $VAR=VALUE` 	: set the CPU register or variable `VAR` to `VALUE`. 
 >- `$eax` 				: x86 CPU register holding the return value of the last function call, here `getuid()`
->- `continue` 			: resume program execution until the next breakpoint or program end.
+>- `c`		 			: alias of `continue` - resume program execution until the next breakpoint or program end.
 	
 
-## 2.b Bypass With `gdb` - Jump To The Address
+## 3.b Bypass With `gdb` - Jump To The Address
 
-TEXT
+Alternativly, gdb can be also use to jump directly to the print of the token.
 
 ```bash
 level14@SnowCrash:~$ gdb getflag
@@ -112,36 +159,42 @@ Dump of assembler code for function main:
    0x08048eca <+1412>:	leave  
    0x08048ecb <+1413>:	ret    
 End of assembler dump.
+
+[...]
+```
+
+By disassemble the main function the all of `ft_des` can be found.
+ft_des stand for DES that is a encryption method. Probably the function to decrypt the code. The last one must be for the last level.
+
+**Explanation:**
+>- `disassemble`
+
+```bash
+[...]
 (gdb) r
 Starting program: /bin/getflag 
 
 Breakpoint 1, 0x0804894a in main ()
 (gdb) jump *0x08048de5
 Continuing at 0x8048de5.
-7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+XXX
 *** stack smashing detected ***: /bin/getflag terminated
-[...]
+
 ```
 
-TEXT
+Know the address of the last ft_des and print, we can jump to the start of the segment and continue the code to do the decryption and print.
 
 **Bypass explanation:**
 >- `gdb ./level13`											: launch `gdb` on the binary `level13`.
->- `b getuid`												: set a breakpoint on the `getuid` function.
+>- `b main`													: set a breakpoint on the `main` function.
 >- `r`														: run the program and stop at the `getuid` breakpoint.
->- `Breakpoint 1, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
->- `n`														: step to the next instruction after `getuid`.
->- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
->- `set $eax=4242`											: override the return value of `getuid()` to `4242` (instead of `2013`).
->- `continue`												: resume execution to reach the token output.
+>- `Breakpoint 1, 0x0804894a in main ()`					: indicates the program has paused at `main()`.
+>- `jump  *0x08048de5`										: jump to the address `0x08048de5`.
 
 **Explanation:**
 >- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
 
 >- `b FUNCTION` 		: set a breakpoint at `FUNCTION`.
 >- `r` 					: run the program in the debugger.
->- `n` 					: execute the next instruction (step over).
->- `set $VAR=VALUE` 	: set the CPU register or variable `VAR` to `VALUE`. 
->- `$eax` 				: x86 CPU register holding the return value of the last function call, here `getuid()`
->- `continue` 			: resume program execution until the next breakpoint or program end.
+>- `jump`				: jump to ???.
 	
