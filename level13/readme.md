@@ -149,7 +149,7 @@ your token is XXX
 >- `n`														: step to the next instruction after `getuid`.
 >- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
 >- `set $eax=4242`											: override the return value of `getuid()` to `4242` (instead of `2013`).
->- `continue`												: resume execution to reach the token output.
+>- `continue`												: resumes execution to reach the token output.
 
 **Explanation:**
 >- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
@@ -159,5 +159,5 @@ your token is XXX
 >- `n` 					: execute the next instruction (step over).
 >- `set $VAR=VALUE` 	: set the CPU register or variable `VAR` to `VALUE`. 
 >- `$eax` 				: x86 CPU register holding the return value of the last function call, here `getuid()`
->- `continue` 			: resume program execution until the next breakpoint or program end.
+>- `continue` 			: resumes program execution until the next breakpoint or program end.
 	
