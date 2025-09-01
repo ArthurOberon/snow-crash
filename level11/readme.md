@@ -65,9 +65,9 @@ Erf nope..
 To communicate with the program, a client must connect to the server using `nc` (netcat) or any TCP client.
 
 **Explanation:**
->- `nc`				: netcat, a tool to read and write data across networks.
->- `locahost`		: address of the local machine.
->- `5151`			: port to listen to.
+- `nc`				: netcat, a tool to read and write data across networks.
+- `locahost`		: address of the local machine.
+- `5151`			: port to listen to.
 
 
 ## 3. Misleading Approach
@@ -92,9 +92,9 @@ Erf nope..
 Therefore, a different method must be employed to retrieve the token.
 
 **Explanation:**
->- `nc`				: netcat, a tool to read and write data across networks.
->- `locahost`		: address of the local machine.
->- `5151`			: port to listen to.
+- `nc`				: netcat, a tool to read and write data across networks.
+- `locahost`		: address of the local machine.
+- `5151`			: port to listen to.
 
 ## 4. Exploiting Shell Injection
 
@@ -111,14 +111,14 @@ The `io.popen("echo "..pass.." | sha1sum")` call executes a shell command that c
 By proving the shell command `;getflag>/tmp/getflag` as password, the shell executes the `getflag` command with the privileges of the SUID binary (i.e., as `flag11`) and redirects the output to `/tmp/getflag`.
 
 **Explanation of the injection:**
->- `;`					: ends the `echo` command in the shell and allows `getflag` to run.
->- `getflag`			: executes the privileged command.
->- `>/tmp/getflag`				: redirects the output of `getflag` to `/tmp/getflag`.
+- `;`						: ends the `echo` command in the shell and allows `getflag` to run.
+- `getflag`					: executes the privileged command.
+- `>/tmp/getflag`			: redirects the output of `getflag` to `/tmp/getflag`.
 
 **Explanation:**
->- `nc`				: netcat, a tool to read and write data across networks.
->- `localhost`		: address of the local machine.
->- `5151`			: port to listen to.
->- `;`				: separates commands, ending the current one and starting a new one.
->- `getflag`		: command to execute to get the flag.
->- `> FILE`			: redirects the standard output of a command into `FILE`
+- `nc`				: netcat, a tool to read and write data across networks.
+- `localhost`		: address of the local machine.
+- `5151`			: port to listen to.
+- `;`				: separates commands, ending the current one and starting a new one.
+- `getflag`			: command to execute to get the flag.
+- `> FILE`			: redirects the standard output of a command into `FILE`

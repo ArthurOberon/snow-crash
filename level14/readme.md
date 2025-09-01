@@ -361,9 +361,9 @@ From this analysis, there is three ways to retrieve the final token:
 - Reverse-engineer `ft_des` to decrypt the stored ciphertext and obtain the token.
 
 **Explanation:**
->- `strings`		: displays printable strings from a binary file.
->- `ptrace`			: allows a process to observe or control another process
->- `objdump`		: disassembles a binary to show its assembly instructions
+- `strings`			: displays printable strings from a binary file.
+- `ptrace`			: allows a process to observe or control another process
+- `objdump`			: disassembles a binary to show its assembly instructions
 
 ## 3. Bypass Protections With `gdb`
 
@@ -410,30 +410,30 @@ Check flag.Here is your token : XXX
 ```
 
 **Bypass explanation:**
->- `gdb getflag`											: launch `gdb` on the binary `getflag`.
->- `b ptrace`												: set a breakpoint on the `ptrace` function.
->- `b getuid`												: set a breakpoint on the `getuid` function.
->- `r`														: run the program and stop at the `getuid` breakpoint.
->- `Breakpoint 1, 0xb7f146d0 in ptrace ()`					: indicates the program has paused at `ptrace()`.
->- `n`														: step to the next instruction after `ptrace`.
->- `set $eax=0`												: override the return value of `ptrace()` to `0` (instead of `-1`).
->- `c`														: resume execution to reach the next breakpoint on `getuid`.
->- `Breakpoint 2, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
->- `n`														: step to the next instruction after `getuid`.
->- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
->- `set $eax=3014`											: override the return value of `getuid()` to `3014` (instead of `2014`).
->- `c`														: resume execution to reach the token output.
+- `gdb getflag`												: launch `gdb` on the binary `getflag`.
+- `b ptrace`												: set a breakpoint on the `ptrace` function.
+- `b getuid`												: set a breakpoint on the `getuid` function.
+- `r`														: run the program and stop at the `getuid` breakpoint.
+- `Breakpoint 1, 0xb7f146d0 in ptrace ()`					: indicates the program has paused at `ptrace()`.
+- `n`														: step to the next instruction after `ptrace`.
+- `set $eax=0`												: override the return value of `ptrace()` to `0` (instead of `-1`).
+- `c`														: resume execution to reach the next breakpoint on `getuid`.
+- `Breakpoint 2, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
+- `n`														: step to the next instruction after `getuid`.
+- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
+- `set $eax=3014`											: override the return value of `getuid()` to `3014` (instead of `2014`).
+- `c`														: resume execution to reach the token output.
 
 **Explanation:**
->- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
->- `-q` 				: quiet mode, suppresses the introductory messages.
+- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
+- `-q` 					: quiet mode, suppresses the introductory messages.
 
->- `b FUNCTION` 		: set a breakpoint at `FUNCTION`.
->- `r` 					: run the program in the debugger.
->- `n` 					: execute the next instruction (step over).
->- `set $VAR=VALUE` 	: set the CPU register or variable `VAR` to `VALUE`. 
->- `$eax` 				: x86 CPU register holding the return value of the last function call.
->- `c`		 			: alias of `continue` - resumes program execution until the next breakpoint or program end.
+- `b FUNCTION` 			: set a breakpoint at `FUNCTION`.
+- `r` 					: run the program in the debugger.
+- `n` 					: execute the next instruction (step over).
+- `set $VAR=VALUE` 		: set the CPU register or variable `VAR` to `VALUE`. 
+- `$eax` 				: x86 CPU register holding the return value of the last function call.
+- `c`		 			: alias of `continue` - resumes program execution until the next breakpoint or program end.
 
 ## 4.a Bypass With `gdb` - Jump To The Address
 
@@ -482,18 +482,18 @@ XXX
 By finding the correct segment, it is possible to jump directly directly to its starting address of the segment. Then continue the execution to retrieve the token.
 
 **Bypass explanation:**
->- `gdb getflag`											: launch `gdb` on the binary `getflag`.
->- `b main`													: set a breakpoint on the `main` function.
->- `r`														: run the program and stop at the `getuid` breakpoint.
->- `Breakpoint 1, 0x0804894a in main ()`					: indicates the program has paused at `main()`.
->- `jump  *0x08048de5`										: jump to the address `0x08048de5`.
+- `gdb getflag`											: launch `gdb` on the binary `getflag`.
+- `b main`													: set a breakpoint on the `main` function.
+- `r`														: run the program and stop at the `getuid` breakpoint.
+- `Breakpoint 1, 0x0804894a in main ()`					: indicates the program has paused at `main()`.
+- `jump  *0x08048de5`										: jump to the address `0x08048de5`.
 
 **Explanation:**
->- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
+- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
 
->- `b FUNCTION` 		: set a breakpoint at `FUNCTION`.
->- `r` 					: run the program in the debugger.
->- `jump *ADDRESS`		: jumps the execution directly to the instruction at `ADDRESS`.
+- `b FUNCTION` 			: set a breakpoint at `FUNCTION`.
+- `r` 					: run the program in the debugger.
+- `jump *ADDRESS`		: jumps the execution directly to the instruction at `ADDRESS`.
 
 ## 4.b Jump directly To The Address
 
@@ -625,10 +625,10 @@ The function `ft_des` is fully disassembled, but its logic is rather complex to 
 A much simpler approach is to decompile the binary using a reverse-engineering tool.
 
 **Explanation:**
->- `gdb` 					: GNU Debugger, allows inspection and modification of running programs.
->- `-q` 					: quiet mode, suppresses the introductory messages.
+- `gdb` 					: GNU Debugger, allows inspection and modification of running programs.
+- `-q` 						: quiet mode, suppresses the introductory messages.
 
->- `disassemble FUNCTION`	: displays the assembly instructions of the given `FUNCTION`
+- `disassemble FUNCTION`	: displays the assembly instructions of the given `FUNCTION`
 
 A decompiler reconstructs a C-like representation of the function, making it much easier to understand the decryption algorithm.
 It can be downloaded (or run in a Docker container), but there are also online tools, such as [Dogbolt](https://dogbolt.org/), which provides multiple decompilers at the same time.
@@ -755,6 +755,9 @@ host@pc:> gcc ft_des.c
 host@pc:> ./a.out 
 XXX                    
 ```
+
+**Explanation:**
+- `gcc` 				: compile the C file into a binary.
 
 The output is identical across all three methods.
 

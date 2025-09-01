@@ -27,8 +27,8 @@ You have new mail.
 This will be useful later.
 
 **Explanation:**
->- `ssh HOST`			:
->- `-p 4243`			:
+- `ssh HOST`		: securely connect to the remote machine `HOST`.
+- `-p XXXX`			: connect using port `XXXX`.
 
 ## 1. Inspect The Home Directory
 
@@ -53,10 +53,10 @@ level05@SnowCrash:~$ find / -user "flag05" 2>/dev/null
 ```
 
 **Explanation:**
->- `find`				: command used to search for files.
->- `/`					: search starting point (root directory).
->- `-user flag05`		: filters results to only files owned by \`flag05\`.
->- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+- `find`				: command used to search for files.
+- `/`					: search starting point (root directory).
+- `-user flag05`		: filters results to only files owned by \`flag05\`.
+- `2>/dev/null`			: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 ## 2.b Inspect The Files
 
@@ -92,9 +92,9 @@ uid=2005(level05) gid=2005(level05) groups=2005(level05),100(users)
 The `id` output confirms that the script runs with the current user’s privileges.
 
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
->- `sh`					: execute a script.
->- `id`					: gives id of the current user.
+- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
+- `sh`					: execute a script.
+- `id`					: gives id of the current user.
 
 ## 3.a Find All `mail` Directories
 
@@ -107,11 +107,11 @@ level05@SnowCrash:~$ find / -type d -name mail 2>/dev/null
 With the help of the hint found before, 2 directories can be found.
 
 **Explanation:**
->- `find`				: command used to search for files.
->- `/`					: search starting point (root directory).
->- `-type d`			: search for directories only.
->- `-name mail`			: filters results to only files named \`mail\`.
->- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+- `find`				: command used to search for files.
+- `/`					: search starting point (root directory).
+- `-type d`				: search for directories only.
+- `-name mail`			: filters results to only files named \`mail\`.
+- `2>/dev/null`			: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 ## 3.b Inspect Mail Directories
 
@@ -136,11 +136,11 @@ The option `- flag05` proves that the rule was created by the `root` and is exec
 
 
 **Explanation:**
->- `*/2 * * * *`					: each * stands for a time field: `minute hour day month year`. 
->- `su`								: switches to another user. 
->- `-c`								: executes the following command.
->- `"sh /usr/sbin/openarenaserver"`	: executes the `/usr/sbin/openarenaserver` script.
->- `- flag05`						: runs this rule as `flag05` (this option is only accessible to the root).
+- `*/2 * * * *`						: each * stands for a time field: `minute hour day month year`. 
+- `su`								: switches to another user. 
+- `-c`								: executes the following command.
+- `"sh /usr/sbin/openarenaserver"`	: executes the `/usr/sbin/openarenaserver` script.
+- `- flag05`						: runs this rule as `flag05` (this option is only accessible to the root).
 
 ## 3.c Exploitation Test via Cron
 
@@ -157,8 +157,8 @@ uid=3005(flag05) gid=3005(flag05) groups=3005(flag05),1001(flag)
 The `/tmp/id` output confirms that the rule was set up by `root` and is executed with `flag05` privileges.
 
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it .
->- `id`					: print the uid and uig of the executing user.
+- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it .
+- `id`					: print the uid and uig of the executing user.
 
 ## 4. Exploit Using `crontab`
 
@@ -178,7 +178,7 @@ After waiting two minutes, the cron job runs the script as `flag05`.
 Displaying the content of `/tmp/getflag` reveals the token.
 
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
+- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 
 ## 5. Additional Notes
 
@@ -194,12 +194,12 @@ Binary file /proc/27761/cmdline matches
 ```
 
 **Explanation:**
->- `find`											: command used to search for files.
->- `/`												: search starting point (root directory).
->- `-type f`										: search for files only.
->- `-exec grep -H "/usr/sbin/openarenaserver" {}`	: exec \`grep -H "/usr/sbin/openarenaserver"\` on each file found.
->- `\+` 											: terminates the exec command to run it efficiently on multiple files.
->- `2>/dev/null`									: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+- `find`											: command used to search for files.
+- `/`												: search starting point (root directory).
+- `-type f`											: search for files only.
+- `-exec grep -H "/usr/sbin/openarenaserver" {}`	: exec \`grep -H "/usr/sbin/openarenaserver"\` on each file found.
+- `\+` 												: terminates the exec command to run it efficiently on multiple files.
+- `2>/dev/null`										: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 
 ```bash
@@ -209,8 +209,8 @@ level05@SnowCrash:~$ find / -type f -name level05  2>/dev/null
 ```
 
 **Explanation:**
->- `find`				: command used to search for files.
->- `/`					: search starting point (root directory).
->- `-type d`			: search for directories only.
->- `-name level05`		: filters results to only files named \`level05\`.
->- `2>/dev/null`		: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+- `find`				: command used to search for files.
+- `/`					: search starting point (root directory).
+- `-type d`				: search for directories only.
+- `-name level05`		: filters results to only files named \`level05\`.
+- `2>/dev/null`			: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.

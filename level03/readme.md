@@ -55,7 +55,7 @@ This means the binary uses `system("/usr/bin/env echo Exploit me")` internally.
 `/usr/bin/env` will look for echo in the directories defined by the `PATH` environment variable — which we can manipulate.
 
 **Explanation:**
->- `strings`			: displays printable strings from a binary file.
+- `strings`			: displays printable strings from a binary file.
 
 ## 3.a Exploit The Binary With Link
 
@@ -71,10 +71,10 @@ Then create a symbolic link `/tmp/echo` pointing to `/bin/getflag`.
 When the binary executes `echo`, it actually runs `getflag` with `flag03`'s privileges.
 
 **Explanation:**
->- `export`			: modifies a environment variable.
+- `export`			: modifies a environment variable.
 
->- `ln TARGET LINK`	: creates link from `LINK` to `TARGET`.
->- `-s`				: creates a symbolic link from `LINK` to `TARGET`.
+- `ln TARGET LINK`	: creates link from `LINK` to `TARGET`.
+- `-s`				: creates a symbolic link from `LINK` to `TARGET`.
 
 ## 3.b Exploit The Binary With Script
 
@@ -99,8 +99,8 @@ Make the script executable.
 Run the binary — it executes the fake `echo` instead of the real one.
 
 **Explanation:**
->- `export` 			: modifies a environment variable.
+- `export` 				: modifies a environment variable.
 
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
+- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 
->- `chmod +x file`		: makes the file executable.
+- `chmod +x file`		: makes the file executable.

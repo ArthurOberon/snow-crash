@@ -19,10 +19,10 @@ host@pc:> scp -P 4243 level02@127.0.0.1:~/level02.pcap .
 Securely copies the `level02.pcap` file from the VM to the host machine.
 
 **Explanation:**
->- `scp` 								: secure copy command, used to transfer files between systems over SSH.
->- `-P 4243`							: specify the custom SSH port (4243).
->- `level02@127.0.0.1:~/level02.pcap`	 	: path to the source file on the VM.
->- `.`									: destination directory on the host.
+- `scp` 									: secure copy command, used to transfer files between systems over SSH.
+- `-P 4243`									: specify the custom SSH port (4243).
+- `level02@127.0.0.1:~/level02.pcap`	 	: path to the source file on the VM.
+- `.`										: destination directory on the host.
 
 ## 3. Create A Docker Analysis Environment
 
@@ -33,12 +33,12 @@ root@40d275155c42:/# apt update; apt install -y tshark xxd
 ```
 
 **Explanation:**
->- `docker run	`							: run a new Docker container.
->- `--rm`									: automatically remove the container after it exits.
->- `-it`									: run in interactive terminal mode.
->- `--name snow-crash-flag02`				: assign a name to the container.
->- `-v $(pwd):/snow-scrach`					: mount current directory into `/snow-crash` in the container.
->- `debian bash`							: run a Debian image with a bash shell
+- `docker run	`							: run a new Docker container.
+- `--rm`									: automatically remove the container after it exits.
+- `-it`										: run in interactive terminal mode.
+- `--name snow-crash-flag02`				: assign a name to the container.
+- `-v $(pwd):/snow-scrach`					: mount current directory into `/snow-crash` in the container.
+- `debian bash`								: run a Debian image with a bash shell
 
 - `apt update; apt install -y tshark xxd`	: install `tshark` for packet analysis and `xxd` for hex-to-binary conversion.
 
@@ -58,14 +58,14 @@ This command reads the capture file with `tshark`, extracts the TCP payload in h
 The output reveals an interactive login attempt.
 
 >**Explanation:**
->- `tshark`							: command-line network protocol analyzer (Wireshark works to but on ternimal).
->- ` -r /snow-scrach/level02.pcap`	: read packets from the file `/snow-scrach/level02.pcap` instead of capturing live traffic.
->- `-T fields`						: ouput only the selected fields.
->- `-e tcp.payload`					: select the field - extract the raw TCP payload in hexadecimal format.
+- `tshark`							: command-line network protocol analyzer (Wireshark works to but on ternimal).
+- ` -r /snow-scrach/level02.pcap`	: read packets from the file `/snow-scrach/level02.pcap` instead of capturing live traffic.
+- `-T fields`						: ouput only the selected fields.
+- `-e tcp.payload`					: select the field - extract the raw TCP payload in hexadecimal format.
 
->- `xxd`							: hex dump tool
->- `-r`								: reverse operation - convert hex back to binary/ASCII
->- `-p`								: interprets the input as a continuous hex stream without formatting.
+- `xxd`								: hex dump tool
+- `-r`								: reverse operation - convert hex back to binary/ASCII
+- `-p`								: interprets the input as a continuous hex stream without formatting.
 
 ## 5. Step-By-Step Payload Reconstruction
 
@@ -125,12 +125,12 @@ root@9ca1591ece3e:/# tshark -r /snow-scrach/level02.pcap -T fields -e ip.src -e 
 ```
 
 **Explanation:**
->- `tshark`							: command-line network protocol analyzer (Wireshark works to but on ternimal).
->- ` -r /snow-scrach/level02.pcap`	: read packets from the file `/snow-scrach/level02.pcap` instead of capturing live traffic.
->- `-T fields`						: ouput only the selected fields.
->- `-e ip.src`						: select the field - extract the source IP address of each packet.
->- `-e ip.dst`						: select the field - extract the destination IP address of each packet.
->- `-e tcp.payload`					: select the field - extract the raw TCP payload in hexadecimal format.
+- `tshark`							: command-line network protocol analyzer (Wireshark works to but on ternimal).
+- ` -r /snow-scrach/level02.pcap`	: read packets from the file `/snow-scrach/level02.pcap` instead of capturing live traffic.
+- `-T fields`						: ouput only the selected fields.
+- `-e ip.src`						: select the field - extract the source IP address of each packet.
+- `-e ip.dst`						: select the field - extract the destination IP address of each packet.
+- `-e tcp.payload`					: select the field - extract the raw TCP payload in hexadecimal format.
 
 By reading the packets one by one, it’s possible to manually reconstruct the password while tracking corrections (7f = backspace = DEL).
 Using a hex-to-ASCII converter (e.g., [RapidTables](https://www.rapidtables.com/convert/number/hex-to-ascii.html)) or an [ASCII table](https://media.geeksforgeeks.org/wp-content/uploads/20240304094301/ASCII-Table.png), each hexadecimal value can be translated into its corresponding character.

@@ -47,7 +47,7 @@ your token is %s
 `strings` confirms the binary calls `getuid()`, and also contains what appears to be an encrypted token : `boe]!ai0FB@.:|L6l@A?>qJ}I`. However, this token cannot be directly used or decoded.
 
 **Explanation:**
->- `strings`			: displays printable strings from a binary file.
+- `strings`				: displays printable strings from a binary file.
 
 ```bash
 level13@SnowCrash:~$ strace ./level13 
@@ -91,7 +91,7 @@ getuid32()                              = 2013
 It's confirm that `getuid()` returns `2013`.
 
 **Explanation:**
->- `strace`			: traces system calls and signals made by a process.
+- `strace`				: traces system calls and signals made by a process.
 
 The UID could normally be changed by `root` using `chown` and the SUID bit:
 ```bash
@@ -107,15 +107,15 @@ sudouser@SnowCrash:~$ sudo -u \#4242 ./level13
 Howerver the user `slevel13` does not have sufficient permissions to perform either action.
 
 **Explanation:**
->- `sudo`			: execute a command as another user, typically `root`.
+- `sudo`			: execute a command as another user, typically `root`.
 
->- `chown`			: change the owner and/or group of a file.
->- `XXXX:XXXX`		: specifies the new owner and group (`UID:GID`).
->- `u+s`			: sets the SUID bit, so the binary runs with the file owner’s privileges.
+- `chown`			: change the owner and/or group of a file.
+- `XXXX:XXXX`		: specifies the new owner and group (`UID:GID`).
+- `u+s`				: sets the SUID bit, so the binary runs with the file owner’s privileges.
 
->- `sudo -u`		: run a command as a specified user
+- `sudo -u`			: run a command as a specified user
 
->- `\#XXXX`			: numeric UID of the user to run the command as.
+- `\#XXXX`			: numeric UID of the user to run the command as.
 
 ## 3. Bypass The Protection
 
@@ -142,22 +142,22 @@ your token is XXX
 ```
 
 **Bypass explanation:**
->- `gdb ./level13`											: launch `gdb` on the binary `level13`.
->- `b getuid`												: set a breakpoint on the `getuid` function.
->- `r`														: run the program and stop at the `getuid` breakpoint.
->- `Breakpoint 1, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
->- `n`														: step to the next instruction after `getuid`.
->- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
->- `set $eax=4242`											: override the return value of `getuid()` to `4242` (instead of `2013`).
->- `continue`												: resumes execution to reach the token output.
+- `gdb ./level13`											: launch `gdb` on the binary `level13`.
+- `b getuid`												: set a breakpoint on the `getuid` function.
+- `r`														: run the program and stop at the `getuid` breakpoint.
+- `Breakpoint 1, 0xb7ee4cc0 in getuid ()`					: indicates the program has paused at `getuid()`.
+- `n`														: step to the next instruction after `getuid`.
+- `Single stepping until exit from function getuid,`		: indicates the program is executing `getuid()` step by step and is about to return.
+- `set $eax=4242`											: override the return value of `getuid()` to `4242` (instead of `2013`).
+- `continue`												: resumes execution to reach the token output.
 
 **Explanation:**
->- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
+- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
 
->- `b FUNCTION` 		: set a breakpoint at `FUNCTION`.
->- `r` 					: run the program in the debugger.
->- `n` 					: execute the next instruction (step over).
->- `set $VAR=VALUE` 	: set the CPU register or variable `VAR` to `VALUE`. 
->- `$eax` 				: x86 CPU register holding the return value of the last function call, here `getuid()`
->- `continue` 			: resumes program execution until the next breakpoint or program end.
+- `b FUNCTION` 			: set a breakpoint at `FUNCTION`.
+- `r` 					: run the program in the debugger.
+- `n` 					: execute the next instruction (step over).
+- `set $VAR=VALUE` 		: set the CPU register or variable `VAR` to `VALUE`. 
+- `$eax` 				: x86 CPU register holding the return value of the last function call, here `getuid()`
+- `continue` 			: resumes program execution until the next breakpoint or program end.
 	

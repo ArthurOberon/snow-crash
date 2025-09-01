@@ -60,26 +60,26 @@ Because the command is executed with backticks `\``, and `$xx` comes directly fr
 - Calls the function `n()` which prints `..` if a match is found, or `.` otherwise.
 
 **Regex explanation:**
->- `tr/a-z/A-Z/`	: translates every lowercase character (`a–z`) into its uppercase equivalent (`A–Z`).
-	>- `tr/A/B `		: replaces each occurrence of characters in set `A` with the corresponding character in set `B`.
-	>- `a-z`			: every ASCII character between `a` and `z`.
-	>- `A-Z`			: every ASCII character between `A` and `Z`.
+- `tr/a-z/A-Z/`		: translates every lowercase character (`a–z`) into its uppercase equivalent (`A–Z`).
+	- `tr/A/B `			: replaces each occurrence of characters in set `A` with the corresponding character in set `B`.
+	- `a-z`				: every ASCII character between `a` and `z`.
+	- `A-Z`				: every ASCII character between `A` and `Z`.
 
->- `s/\s.*//` 		: regex substitution, only keeping the first "word".
-	>- `s/.../.../`		: substitution syntax in Perl regex.
-	>- `\s`				: matches the first whitespace.
-	>- `.*`				: matches everything after it.
-	>- `//`				: replaces the match with nothing (i.e., deletes it).
+- `s/\s.*//`		: regex substitution, only keeping the first "word".
+	- `s/.../.../`		: substitution syntax in Perl regex.
+	- `\s`				: matches the first whitespace.
+	- `.*`				: matches everything after it.
+	- `//`				: replaces the match with nothing (i.e., deletes it).
 
->- `^$xx`			: ensures that the line begins with `$xx`.
-	>-	`^`				: matches the start of a line.s
-	>-	`$xx`			: the expanded variable value passed from user input.
+- `^$xx`			: ensures that the line begins with `$xx`.
+	-	`^`				: matches the start of a line.s
+	-	`$xx`			: the expanded variable value passed from user input.
 
 **Explanation:**
->- `egrep`			: extended `grep`, searches for a regex pattern in a file (supports extended regex, unlike basic `grep`).
->- `"^$xx"`			: the regex to match, lines that start with the content of `$xx`.
->- `/tmp/xd`		: the file in which the pattern is searched.
->- `2>&1`			: redirects error messages (stderr, file descriptor 2) to standard ouput (stdout, file descriptor 1).
+- `egrep`			: extended `grep`, searches for a regex pattern in a file (supports extended regex, unlike basic `grep`).
+- `"^$xx"`			: the regex to match, lines that start with the content of `$xx`.
+- `/tmp/xd`			: the file in which the pattern is searched.
+- `2>&1`			: redirects error messages (stderr, file descriptor 2) to standard ouput (stdout, file descriptor 1).
 
 ## 3. Exploit Shell Command Injection
 
@@ -100,23 +100,23 @@ The script `/tmp/SCRIPT` created execute `getflag` and redirect the output in `t
 
 **Payload breakdown:**
 
->- `$(...)` 		: command substitution syntax in shell. It executes the command inside the parentheses and replaces it with the output. 
->- `/*/` 			: matches any directory in the root (`/`). The asterisk (`*`) is used because the program transforms all letters to uppercase, so the exact path may be altered.
->- SCRIPT` 				: name of the script, uppercase is used because the program converts input to uppercase before execution, ensuring the script is found.
+- `$(...)` 				: command substitution syntax in shell. It executes the command inside the parentheses and replaces it with the output. 
+- `/*/` 				: matches any directory in the root (`/`). The asterisk (`*`) is used because the program transforms all letters to uppercase, so the exact path may be altered.
+- SCRIPT` 				: name of the script, uppercase is used because the program converts input to uppercase before execution, ensuring the script is found.
 
 **Explanation:**
->- `cat << EOF > file`		: creates a file and writes everything until `EOF` into it.
+- `cat << EOF > file`		: creates a file and writes everything until `EOF` into it.
 
->- `> FILE`					: redirects the standard output of a command into `FILE`
+- `> FILE`					: redirects the standard output of a command into `FILE`
 
->- `chmod +x file`			: makes the file executable.
+- `chmod +x file`			: makes the file executable.
 
->- `curl`					: makes an HTTP request.
->- `http://`				: protocol used.
->- `localhost`	  			: destination host, here the request is made to the local machine.
->- `4747`					: port number where the Perl CGI script is listening.
->- `level04.pl`  			: script to execute *(can be omitted from the request)*.
->- `?x`						: query parameter passed to the script, read by `CGI`.
+- `curl`					: makes an HTTP request.
+- `http://`					: protocol used.
+- `localhost`	  			: destination host, here the request is made to the local machine.
+- `4747`					: port number where the Perl CGI script is listening.
+- `level04.pl`  			: script to execute *(can be omitted from the request)*.
+- `?x`						: query parameter passed to the script, read by `CGI`.
 
 ## 4. Alternatives `curl`
 
@@ -133,9 +133,9 @@ level12@SnowCrash:~$ curl localhost:4646?x='$(/*/script)'
 - The path `/level12.pl` can sometimes be omitted depending on the CGI server configuration. In this case, it works because it is the only file served on `localhost:4646`.
 
 **Explanation:**
->- `curl`					: makes an HTTP request.
->- `http://`				: protocol used.
->- `localhost`	  			: destination host, here the request is made to the local machine.
->- `4747`					: port number where the Perl CGI script is listening.
->- `level04.pl`  			: script to execute *(can be omitted from the request)*.
->- `?x`						: query parameter passed to the script, read by `CGI`.
+- `curl`					: makes an HTTP request.
+- `http://`					: protocol used.
+- `localhost`	  			: destination host, here the request is made to the local machine.
+- `4747`					: port number where the Perl CGI script is listening.
+- `level04.pl`  			: script to execute *(can be omitted from the request)*.
+- `?x`						: query parameter passed to the script, read by `CGI`.

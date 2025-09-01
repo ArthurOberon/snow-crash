@@ -15,12 +15,12 @@ Binary file /proc/3096/cmdline matches
 ```
 
 **Explanation:**
->- `find`								: command used to search for files.
->- `/`									: search starting point (root directory).
->- `-type f`							: search for files only.
->- `-exec grep -H "flag01" {}`			: exec \`grep -H "flag01"\` on each file found.
->- `\+` 								: terminates the exec command to run it efficiently on multiple files.
->- `2>/dev/null`						: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
+- `find`								: command used to search for files.
+- `/`									: search starting point (root directory).
+- `-type f`								: search for files only.
+- `-exec grep -H "flag01" {}`			: exec \`grep -H "flag01"\` on each file found.
+- `\+` 									: terminates the exec command to run it efficiently on multiple files.
+- `2>/dev/null`							: redirects error messages to \`/dev/null\` to avoid clutter from permission errors.
 
 ## 2. Inspect The Output
 
@@ -46,10 +46,10 @@ host@pc:> scp -P 4243 level01@127.0.0.1:/etc/passwd .
 Securely copies the `/etc/passwd` file from the VM to the host machine.
 
 **Explanation:**
->- `scp` 								: secure copy command, used to transfer files between systems over SSH.
->- `-P 4243`							: specify the custom SSH port (4243).
->- `level01@127.0.0.1:/etc/passwd`	 	: path to the source file on the VM.
->- `.`									: destination directory on the host.
+- `scp` 								: secure copy command, used to transfer files between systems over SSH.
+- `-P 4243`								: specify the custom SSH port (4243).
+- `level01@127.0.0.1:/etc/passwd`	 	: path to the source file on the VM.
+- `.`									: destination directory on the host.
 
 
 ## 4. Crack The Token
@@ -67,16 +67,16 @@ Use Docker to create an isolated environment to run John the Ripper.
 John the Ripper is a high-performance password-cracking tool.
 
 **Explanation:**
-> - `docker run	`							: run a new Docker container.
-> - `--rm`									: automatically remove the container after it exits.
-> - `-it`									: run in interactive terminal mode.
->- `--name snow-crash-flag01`				: assign a name to the container.
->- `-v $(pwd):/snow-scrach`					: mount current directory into `/snow-crash` in the container.
->- `debian bash`							: run a Debian image with a bash shell
+- `docker run	`							: run a new Docker container.
+- `--rm`									: automatically remove the container after it exits.
+- `-it`										: run in interactive terminal mode.
+- `--name snow-crash-flag01`				: assign a name to the container.
+- `-v $(pwd):/snow-scrach`					: mount current directory into `/snow-crash` in the container.
+- `debian bash`								: run a Debian image with a bash shell
 
->- `apt update; apt install -y john`		: install John the Ripper inside the container.
+- `apt update; apt install -y john`			: install John the Ripper inside the container.
 
->- `john --show snow-scrash/passwd`	 		: cracked passwords and display it.
+- `john --show snow-scrash/passwd`	 		: cracked passwords and display it.
 
 The command successfully reveals:
 ```

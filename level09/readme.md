@@ -38,8 +38,8 @@ while (str[i])
 ```
 
 **Explanation of logic (encoding):**
->- Each character of the input string is incremented by its position index (0-based).
->- Loop through the input string until the null terminator.
+- Each character of the input string is incremented by its position index (0-based).
+- Loop through the input string until the null terminator.
 
 ## 2. Create Reverse Program
 
@@ -64,8 +64,8 @@ int main(int argc, char **argv)
 ```
 
 **Explanation of logic (decoding):**
->- Each character of the input string is decremented by its position index (0-based).
->- Loop through the input string until the null terminator.
+- Each character of the input string is decremented by its position index (0-based).
+- Loop through the input string until the null terminator.
 
 ## 3.a Reverse The Token From The VM
 
@@ -78,9 +78,9 @@ f3iji1ju5yuevaus41q1afiuq
 ```
 
 **Explanation:**
->- `vim`				: create/edit the source code.
->- `gcc` 				: compile the C file into a binary.
->- `$(cat token)` 		: command substitution, replaces the expression with the contents of `token`.
+- `vim`				: create/edit the source code.
+- `gcc` 				: compile the C file into a binary.
+- `$(cat token)` 		: command substitution, replaces the expression with the contents of `token`.
 
 
 ## 3.b Reverse The Token From The Host
@@ -97,18 +97,18 @@ f3iji1ju5yuevaus41q1afiuq
 ```
 
 **Explanation:**
->- `scp` 								: secure copy command, used to transfer files between systems over SSH.
->- `-P 4243`							: specify the custom SSH port (4243).
->- `level09@127.0.0.1:~/token`	 		: path to the source file on the VM.
->- `.`									: destination directory on the host.
+- `scp` 								: secure copy command, used to transfer files between systems over SSH.
+- `-P 4243`								: specify the custom SSH port (4243).
+- `level09@127.0.0.1:~/token`	 		: path to the source file on the VM.
+- `.`									: destination directory on the host.
 
->- `code`								: open the file with VS Code.
->- `chmod +x file`						: makes the file executable.
+- `code`								: open the file with VS Code.
+- `chmod +x file`						: makes the file executable.
 
->- `gcc` 								: compile the program.
->- `gcc FILE -o EXECUTABLE` 			: compile the source file `FILE` into an executable named `EXECUTABLE`.
+- `gcc` 								: compile the program.
+- `gcc FILE -o EXECUTABLE` 				: compile the source file `FILE` into an executable named `EXECUTABLE`.
 
->- `$(cat token)` 						: command substitution, replaces the expression with the contents of `token`.
+- `$(cat token)` 						: command substitution, replaces the expression with the contents of `token`.
 
 ## 4. Get The Flag
 

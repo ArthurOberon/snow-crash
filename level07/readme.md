@@ -58,7 +58,7 @@ This strongly suggests that the binary retrieves the environment variable `LOGNA
 Because `/bin/echo` is executed via `system()`, command substitution is possible if we control the content of `LOGNAME`.
 
 **Explanation:**
->- `strings`		: displays printable strings from a binary file.
+- `strings`			: displays printable strings from a binary file.
 
 ## 3. Confirm With `env`
 
@@ -70,9 +70,9 @@ LOGNAME=level07
 Indeed, the binary prints the value of the environment variable `LOGNAME`.
 
 **Explanation:**
->- `env` 			: displays all the environment variables available in the current shell.
->- `|` 				: the pipe operator in shell, redirects the output of the command on the left as the input of the command on the right.
->- `grep` 			: command-line tool to search for text patterns in input.
+- `env` 			: displays all the environment variables available in the current shell.
+- `|` 				: the pipe operator in shell, redirects the output of the command on the left as the input of the command on the right.
+- `grep` 			: command-line tool to search for text patterns in input.
 
 ## 4. Exploit The Binary with Environement Variable Injection
 
@@ -86,13 +86,13 @@ Replaces the environment variable `LOGNAME` with a malicious value containing `$
 Because the program runs `system("/bin/echo $LOGNAME")` with `flag07`’s privileges, the shell interprets the `$(...)` syntax and executes the command inside.
 
 **Explanation:**
->- `export` 			: modifies a environment variable.
+- `export` 			: modifies a environment variable.
 
 **Breakdown of the payload:**
 - `$(...)`		: command substitution syntax in shell. It executes the command inside the parentheses and replaces it with the output.
 
 **In the order:**
->- Binary calls `system("/bin/echo $LOGNAME")`.
->- Shell expands it into `system("/bin/echo $(getflag)")`.
->- Shell executes the command substitution (`$(...)`), replacing `$(getflag)` with this output: `Check flag.Here is your token : XXX`.
->- The `system` command becomes : `system("/bin/echo Check flag.Here is your token : XXX")` and is executed.
+- Binary calls `system("/bin/echo $LOGNAME")`.
+- Shell expands it into `system("/bin/echo $(getflag)")`.
+- Shell executes the command substitution (`$(...)`), replacing `$(getflag)` with this output: `Check flag.Here is your token : XXX`.
+- The `system` command becomes : `system("/bin/echo Check flag.Here is your token : XXX")` and is executed.

@@ -45,8 +45,8 @@ Since the binary only blocks filename containing `token`, but not symlinks to it
 The program runs with `flag08`’s privileges, so it is able to follow the link and read the secret.
 
 **Explanation:**
->- `ln TARGET LINK`	: create link from `LINK` to `TARGET`.
->- `-s`				: create a symbolic link from `LINK` to `TARGET`.
+- `ln TARGET LINK`		: create link from `LINK` to `TARGET`.
+- `-s`					: create a symbolic link from `LINK` to `TARGET`.
 
 ## 3. Get The Flag
 

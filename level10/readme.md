@@ -85,7 +85,7 @@ The program first checks access rights on the path, and later uses that path whe
 If the file is swapped between those two moments (for example via a symbolic link), the binary may end up opening a different file than the one it verified, leaking protected data.
 
 **Explanation:**
->- `strings`		: displays printable strings from a binary file.
+- `strings`		: displays printable strings from a binary file.
 
 ## 3.a Listening From The Host Machine
 
@@ -99,9 +99,9 @@ host@pc:> nc -l 6969
 Any data transmitted by the binary will appear here.
 
 **Explanation:**
->- `nc` 				: netcat, a tool to read and write data across networks.
->- `-l` 				: listen mode, acting as a server.
->- `6969` 				: port to listen to.
+- `nc` 					: netcat, a tool to read and write data across networks.
+- `-l` 					: listen mode, acting as a server.
+- `6969` 				: port to listen to.
 
 ## 3.b Listening Form The VM
 
@@ -124,12 +124,12 @@ level10@SnowCrash:~$ nc -l 6969
 ```
 
 **Explanation:**
->- `ssh HOST`			: connects to a remote host via SSH.
->- `-p 4243`			: specifies the SSH port number to use.
+- `ssh HOST`			: connects to a remote host via SSH.
+- `-p 4243`				: specifies the SSH port number to use.
 
->- `nc` 				: netcat, a tool to read and write data across networks.
->- `-l` 				: listen mode, making the nc a host.
->- `6969` 				: port to listen to.
+- `nc` 					: netcat, a tool to read and write data across networks.
+- `-l` 					: listen mode, making the nc a host.
+- `6969` 				: port to listen to.
 
 ## 4.a Explain The TOCTOU Vulnerability Exploit
 
@@ -155,14 +155,14 @@ level10@SnowCrash:~$ sh /tmp/script.sh
 This race condition ensures the binary checks one file, but actually opens another — a textbook TOCTOU attack.
 
 **Explanation:**
->- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
+- `cat << EOF > file`	: creates a file and writes everything until `EOF` into it.
 
->- `touch` 				: creates a file
+- `touch` 				: creates a file
 
->- `ln TARGET LINK`		: creates link from `LINK` to `TARGET`.
->- `-sf`				: forces the creation of a symbolic link from `LINK` to `TARGET`.
+- `ln TARGET LINK`		: creates link from `LINK` to `TARGET`.
+- `-sf`					: forces the creation of a symbolic link from `LINK` to `TARGET`.
 
->- `CMD1 & CMD2` 		: runs a `CMD1` in the background, allowing the `CMD2` to execute immediately in the foreground.
+- `CMD1 & CMD2` 		: runs a `CMD1` in the background, allowing the `CMD2` to execute immediately in the foreground.
 
 
 ## 4.b Sending To The Host Machine

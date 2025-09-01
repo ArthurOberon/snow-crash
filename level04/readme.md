@@ -45,12 +45,12 @@ The backticks are interpreted by Perl as "execute this command".
 When sending `getflag` between backticks, upon reaching the line `` print `echo $y 2>&1`; ``, the script interprets the backticks and executes the `getflag` command. Because of the `flag04`'s privileges, it returns the token.
 
 **Explanation:**
->- `curl` 				  : makes an HTTP request.
->- `http://`				: protocol used.
->- `localhost`	  	: destination host, here the request is made to the local machine.
->- `4747`	: port number where the Perl CGI script is listening.
->- `level04.pl`  	: script to execute *(can be omitted from the request)*.
->- `?x`	: query parameter passed to the script, read by `CGI`.
+- `curl`			: makes an HTTP request.
+- `http://`			: protocol used.
+- `localhost`		: destination host, here the request is made to the local machine.
+- `4747`			: port number where the Perl CGI script is listening.
+- `level04.pl`		: script to execute *(can be omitted from the request)*.
+- `?x`				: query parameter passed to the script, read by `CGI`.
 
 ## 3.b Exploit Using Command Injection With Escaped Backticks
 
@@ -63,12 +63,12 @@ The single quotes `'` surrounding the curl request can be removed, provided that
 Escaping tells the shell to treat the backticks as literal characters and not interpret them locally, ensuring they are sent unchanged in the `curl` command.
 
 **Explanation:**
->- `curl` 				  : makes an HTTP request.
->- `http://`				: protocol used.
->- `localhost`	  	: destination host, here the request is made to the local machine.
->- `4747`	: port number where the Perl CGI script is listening.
->- `level04.pl`  	: script to execute *(can be omitted from the request)*.
->- `?x`	: query parameter passed to the script, read by `CGI`.
+- `curl`			: makes an HTTP request.
+- `http://`			: protocol used.
+- `localhost`		: destination host, here the request is made to the local machine.
+- `4747`			: port number where the Perl CGI script is listening.
+- `level04.pl`		: script to execute *(can be omitted from the request)*.
+- `?x`				: query parameter passed to the script, read by `CGI`.
 
 ## 3.c What Happens Without Proper Backtick Usage
 
@@ -99,9 +99,9 @@ The output of `getflag` replaces the `` `getflag` `` in the request, splitting i
 Escaping (`` \`getflag\` ``) or quoting (`` '`getflag`' ``) ensures the backticks reach the server unchanged.
 
 **Explanation:**
->- `curl` 				  : makes an HTTP request.
->- `http://`				: protocol used.
->- `localhost`	  	: destination host, here the request is made to the local machine.
->- `4747`	: port number where the Perl CGI script is listening.
->- `level04.pl`  	: script to execute *(can be omitted from the request)*.
->- `?x`	: query parameter passed to the script, read by `CGI`.
+- `curl`			: makes an HTTP request.
+- `http://`			: protocol used.
+- `localhost`		: destination host, here the request is made to the local machine.
+- `4747`			: port number where the Perl CGI script is listening.
+- `level04.pl`		: script to execute *(can be omitted from the request)*.
+- `?x`				: query parameter passed to the script, read by `CGI`.
