@@ -40,7 +40,7 @@ root@40d275155c42:/# apt update; apt install -y tshark xxd
 >- `-v $(pwd):/snow-scrach`					: mount current directory into `/snow-crash` in the container.
 >- `debian bash`							: run a Debian image with a bash shell
 
->- `apt update; apt install -y tshark xxd`	: install `tshark` for packet analysis and `xxd` for hex-to-binary conversion.
+- `apt update; apt install -y tshark xxd`	: install `tshark` for packet analysis and `xxd` for hex-to-binary conversion.
 
 ## 4. Extract Raw TCP Payload
 
@@ -57,7 +57,7 @@ Login incorrect
 This command reads the capture file with `tshark`, extracts the TCP payload in hexadecimal, then converts it to ASCII with `xxd`.
 The output reveals an interactive login attempt.
 
-**Explanation:**
+>**Explanation:**
 >- `tshark`							: command-line network protocol analyzer (Wireshark works to but on ternimal).
 >- ` -r /snow-scrach/level02.pcap`	: read packets from the file `/snow-scrach/level02.pcap` instead of capturing live traffic.
 >- `-T fields`						: ouput only the selected fields.
