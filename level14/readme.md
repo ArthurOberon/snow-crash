@@ -497,7 +497,7 @@ By finding the correct segment, it is possible to jump directly directly to its 
 
 ## 4.b Jump directly To The Address
 
-Another method would be to directly jump to the address without breaks on the main function.
+Another method would be to break directly at the target address instead of breaking on `main` and then jumping.
 
 ```bash
 level14@SnowCrash:~$ gdb getflag
@@ -510,12 +510,16 @@ You should not reverse this
 [Inferior 1 (process 2470) exited with code 01]
 ```
 
-However this no work because of the `ptrace` function that protect this code from outside intervention. Breaking to the main function first permitte to passed the `ptrace` function before to do the jump.
+However, this approach does not work because the `ptrace` function protects the binary against external intervention. Setting the breakpoint at `main` first allows the program to pass the `ptrace` check before performing the jump.
 
-## 5. ft_des
+## 5. Reverse-Engineer `ft_des`
 
-First we can disassemble the function `ft_des` and try to understand it (like for the `main` function).
-Another to disassemble is to use `gdb`.
+The last method consists of analyzing the function `ft_des` in order to decrypt the stored token `g <t61:|4_|!@IF.-62FH&G~DCK/Ekrvvdwz?v|`.
+
+
+To achieve this, the function `ft_des` must first be disassembled and studied, in the same way as the `main` function was previously analyzed. This step makes it possible to understand its logic and reconstruct the decryption routine.
+
+> In addition to `objdump`, another common tool for disassembling a program is `gdb`.
 
 ```bash
 level14@SnowCrash:~$ gdb -q getflag
@@ -617,36 +621,19 @@ Dump of assembler code for function ft_des:
 End of assembler dump.
 ```
 
-This is complicated to understand and reverse. A much simplier way is to directly decompile the binary.
+The function `ft_des` is fully disassembled, but its logic is rather complex to analyze directly in assembly.
+A much simpler approach is to decompile the binary using a reverse-engineering tool.
 
 **Explanation:**
->- `gdb` 				: GNU Debugger, allows inspection and modification of running programs.
->- `-q` 				: quiet mode, suppresses the introductory messages.
+>- `gdb` 					: GNU Debugger, allows inspection and modification of running programs.
+>- `-q` 					: quiet mode, suppresses the introductory messages.
 
->- `disassemble`		:
+>- `disassemble FUNCTION`	: displays the assembly instructions of the given `FUNCTION`
 
-To decompile it, I get the binary `/bin/getflag` with a `scp` command:
-```bash
-host@pc:> scp -P 4243 level14@127.0.0.1:/bin/getflag  .
-	   _____                      _____               _     
-	  / ____|                    / ____|             | |    
-	 | (___  _ __   _____      _| |     _ __ __ _ ___| |__  
-	  \___ \| '_ \ / _ \ \ /\ / / |    | '__/ _` / __| '_ \ 
-	  ____) | | | | (_) \ V  V /| |____| | | (_| \__ \ | | |
-	 |_____/|_| |_|\___/ \_/\_/  \_____|_|  \__,_|___/_| |_|
-                                                        
-  Good luck & Have fun
+A decompiler reconstructs a C-like representation of the function, making it much easier to understand the decryption algorithm.
+It can be downloaded (or run in a Docker container), but there are also online tools, such as [Dogbolt](https://dogbolt.org/), which provides multiple decompilers at the same time.
 
-          10.0.2.15 
-level14@127.0.0.1's password: 
-getflag                                                               100%   12KB   1.5MB/s   00:00    
-```
-
-Then pass it to [Dogbolt](https://dogbolt.org/) a online decompiler that proposed mutliple decompiler on the same time.
-
-
-I choose the `Hex-Rays` result:
-
+Here is the `Hex-Rays` decompiler result:
 ```c
 char * ft_des(char *s)
 {
@@ -684,16 +671,21 @@ char * ft_des(char *s)
 }
 ```
 
-It important to know that a decompiler give a pseudo code (in this case in C). And not the real running code.
-So it have to be understood to be redone after.
+As a reminder, the decompiled code only provides pseudo-code, not the actual running code. Therefore, it must be understood and reimplemented.
 
+**Analyze The Function**
+The decompiled code shows that `ft_des` performs a character-wise transformation of the input string:
+- It duplicates the input string using `strdup`.
+- It iterates over each character, applying a transformation depending on the character’s index (even or odd).
+- Odd-indexed characters are incremented in a loop, wrapping from `127` (`[DEL]`) back to `32` (`SPACE`).
+- Even-indexed characters are decremented in a loop, wrapping from `31` (`[UNIT SEPARATOR]`) back to `126` (`~`).
+- A counter `v3` cycles from `0` to `6`, and appears to influence the number of iterations in the inner loops.
+- The transformed string is returned, representing the decrypted token.
 
-This function ...
+The unclear part is `*(char *)(v3 + 134516640)` in the inner loops.
+This appears to access a table from index `v3`. `Hex-Rays` could not resolve this array (likely located outside of the analyzed file) and shows it as a raw memory value. This table is likely the key used in the encryption, and since `v3` iterates only from `0` to `6`, the key is probably of size `7`.
 
-
-The blocking part is `*(char *)(v3 + 134516640)`, this look like calling of a table from the index `v3`. This means that `Hex-Rays` cannot found this array (somewhere outside of the file) and write is memory value instead. This must be the key to the encryption. And `v3` iterate only from 0 to 6, so the key must be of the size of 7.
-
-In the `strings` of the `getflag`, there is a strange logical sequence of number:
+In the `strings` output of `getflag`, there is a notable 7-character numeric sequence:
 ```bash
 level14@SnowCrash:~$ strings /bin/getflag
 [...]
@@ -701,7 +693,10 @@ level14@SnowCrash:~$ strings /bin/getflag
 [...]
 ```
 
-Clean the code and put `0123456` as key then try it:
+This sequence likely corresponds to the key used in the `ft_des` function. This suggests that `0123456` could represent either the actual key values or a placeholder mapping for the inner loops of the decryption routine.
+
+Now that the pseudo-code is fully understood, it needs to be cleaned up, the key 0123456 inserted, made runnable (by adding the necessary libraries) and tested with the token.
+
 ```c
 
 #include <string.h>
@@ -753,13 +748,15 @@ int	main(void)
 }
 ```
 
+
+Then, running the program produces:
 ```bash
 host@pc:> gcc ft_des.c
 host@pc:> ./a.out 
 XXX                    
 ```
 
-The result is the same for the 3 methods.
+The output is identical across all three methods.
 
 ## 6. Get The Flag
 
