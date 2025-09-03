@@ -7,6 +7,8 @@ The main goal of this project is to introduce students to various areas of cyber
 
 Each CTF level enables participants to learn and practice specific skills to identify and exploit flaws in programs or systems, such as exploiting vulnerabilities, analyzing binary files, inspecting network traffic, or performing reverse engineering.
 
+---
+
 ## 📂 Repository Content
 
 This repository contains the writeups for each level. Each folder includes:
@@ -16,6 +18,8 @@ This repository contains the writeups for each level. Each folder includes:
 * **resources/** *(optional)*: supplementary files required to solve the challenge.
 
 > ⚠️ Warning: These are not exhaustive solutions.
+
+---
 
 ## ⚙️ Tools and Skills
 
